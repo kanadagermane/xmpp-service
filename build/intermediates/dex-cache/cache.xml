@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="C:\Users\danie\.android\build-cache\88a35b79d65b041fe7e74bb6521d90cbab0cd275\output\jars\libs\internal_impl-23.4.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="ea3c07504d2c8f4b13aa17c45c1b68ed9c1c3674">
+        <dex dex="C:\Users\danie\AndroidStudioProjects\XMPPservice\xmpp-service\xmppservice\build\intermediates\pre-dexed\debug\internal_impl-23.4.0_0e4e329e3f190c44b5e2ecb1b22a87a95da61cca.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\danie\.gradle\caches\modules-2\files-2.1\org.igniterealtime.smack\smack-im\4.2.0\c1805ee14fe07ac65683e4b22d796d30a4171fd9\smack-im-4.2.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="c1805ee14fe07ac65683e4b22d796d30a4171fd9">
+        <dex dex="C:\Users\danie\AndroidStudioProjects\XMPPservice\xmpp-service\xmppservice\build\intermediates\pre-dexed\debug\smack-im-4.2.0_5b16a2cd49dd8ddd8ca6f29a3fa1b9d9c0f902a2.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\danie\.android\build-cache\7021acc5ebde10c07a0d2a6eb7f404d40853cc13\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="44ee06abb66da30f5855e6bf54574e64cdcd982a">
+        <dex dex="C:\Users\danie\AndroidStudioProjects\XMPPservice\xmpp-service\xmppservice\build\intermediates\pre-dexed\debug\classes_dee24f43b176b053379cfd771043a50715b62ba0.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\danie\.gradle\caches\modules-2\files-2.1\org.igniterealtime.smack\smack-android\4.2.0\1fba3d428a9118497469dd723ae60ab9f44e19ab\smack-android-4.2.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="1fba3d428a9118497469dd723ae60ab9f44e19ab">
+        <dex dex="C:\Users\danie\AndroidStudioProjects\XMPPservice\xmpp-service\xmppservice\build\intermediates\pre-dexed\debug\smack-android-4.2.0_30ece448277e3769aad602ffc0ccec9fb6cf387f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\danie\.gradle\caches\modules-2\files-2.1\org.igniterealtime.smack\smack-core\4.2.0\b460b28484d6315dfa158af0bb9a050c92ea106f\smack-core-4.2.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="b460b28484d6315dfa158af0bb9a050c92ea106f">
+        <dex dex="C:\Users\danie\AndroidStudioProjects\XMPPservice\xmpp-service\xmppservice\build\intermediates\pre-dexed\debug\smack-core-4.2.0_a52da3a800e3e1e6b831f5e533ed7496ccf0e38e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\danie\.android\build-cache\a31d3e8cc9d9bfe8642d36d6dfe5583f0f1aa14c\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="c2c594cace5d83a3227b2b6e658ecbfd586d3ed9">
+        <dex dex="C:\Users\danie\AndroidStudioProjects\XMPPservice\xmpp-service\xmppservice\build\intermediates\pre-dexed\debug\classes_318824e5b71217b7b7f9cd840c26f863764ad111.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\danie\.android\build-cache\88a35b79d65b041fe7e74bb6521d90cbab0cd275\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="67bd36ee9340ec7c254108936ad16b24bed160cc">
+        <dex dex="C:\Users\danie\AndroidStudioProjects\XMPPservice\xmpp-service\xmppservice\build\intermediates\pre-dexed\debug\classes_d06ccf89eed2797947ea673b0bf2c499a271c38b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\danie\.gradle\caches\modules-2\files-2.1\org.igniterealtime.smack\smack-extensions\4.2.0\3bffdc845de26ab601ac9a92e53c02f8676609fe\smack-extensions-4.2.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="3bffdc845de26ab601ac9a92e53c02f8676609fe">
+        <dex dex="C:\Users\danie\AndroidStudioProjects\XMPPservice\xmpp-service\xmppservice\build\intermediates\pre-dexed\debug\smack-extensions-4.2.0_5da77dba4c063641c7256db64e622a67a8f34a70.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\danie\.gradle\caches\modules-2\files-2.1\de.measite.minidns\minidns-core\0.2.1\e17ff1d8283f661ab85f930ff2cbd3d0b7f230c2\minidns-core-0.2.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="e17ff1d8283f661ab85f930ff2cbd3d0b7f230c2">
+        <dex dex="C:\Users\danie\AndroidStudioProjects\XMPPservice\xmpp-service\xmppservice\build\intermediates\pre-dexed\debug\minidns-core-0.2.1_b0ec4d7c9fe77b5a5cbab12a52c3955cb487a4f1.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\danie\.gradle\caches\modules-2\files-2.1\org.jxmpp\jxmpp-util-cache\0.5.0\32752e1fdf24320a2363d9b92504abf05f9b6548\jxmpp-util-cache-0.5.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="32752e1fdf24320a2363d9b92504abf05f9b6548">
+        <dex dex="C:\Users\danie\AndroidStudioProjects\XMPPservice\xmpp-service\xmppservice\build\intermediates\pre-dexed\debug\jxmpp-util-cache-0.5.0_9ad787603406706a7073034a69cd86f16e5e26b9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\danie\.gradle\caches\modules-2\files-2.1\org.jxmpp\jxmpp-core\0.5.0\f87f6947d74e7d126965b8a58a5472bbbea5f956\jxmpp-core-0.5.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="f87f6947d74e7d126965b8a58a5472bbbea5f956">
+        <dex dex="C:\Users\danie\AndroidStudioProjects\XMPPservice\xmpp-service\xmppservice\build\intermediates\pre-dexed\debug\jxmpp-core-0.5.0_e46102b28369f69b857cff31051478d5daa18918.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\danie\.gradle\caches\modules-2\files-2.1\de.measite.minidns\minidns-dnssec\0.2.1\30db10b64196f9a69d5088b834c3634c7067e9c7\minidns-dnssec-0.2.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="30db10b64196f9a69d5088b834c3634c7067e9c7">
+        <dex dex="C:\Users\danie\AndroidStudioProjects\XMPPservice\xmpp-service\xmppservice\build\intermediates\pre-dexed\debug\minidns-dnssec-0.2.1_36142b24fa8651dc70a8b6e9e09862611047aca2.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\danie\.gradle\caches\modules-2\files-2.1\org.igniterealtime.smack\smack-tcp\4.2.0\1ebbf8b432a4d154171141dcd5aef800e43ab1cd\smack-tcp-4.2.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="1ebbf8b432a4d154171141dcd5aef800e43ab1cd">
+        <dex dex="C:\Users\danie\AndroidStudioProjects\XMPPservice\xmpp-service\xmppservice\build\intermediates\pre-dexed\debug\smack-tcp-4.2.0_03b2b7ab6abf3de2edd4c732c1907bcdf6a112fd.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\danie\.gradle\caches\modules-2\files-2.1\de.measite.minidns\minidns-iterative-resolver\0.2.1\6970381d0579d218abb452f41c9535eea672c28d\minidns-iterative-resolver-0.2.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="6970381d0579d218abb452f41c9535eea672c28d">
+        <dex dex="C:\Users\danie\AndroidStudioProjects\XMPPservice\xmpp-service\xmppservice\build\intermediates\pre-dexed\debug\minidns-iterative-resolver-0.2.1_5e615bb58daedf58bb3a8bb68b89e4e4f6323126.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\danie\.gradle\caches\modules-2\files-2.1\org.igniterealtime.smack\smack-resolver-minidns\4.2.0\f455576bef17e16ff5627fee48586aefe3855026\smack-resolver-minidns-4.2.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="f455576bef17e16ff5627fee48586aefe3855026">
+        <dex dex="C:\Users\danie\AndroidStudioProjects\XMPPservice\xmpp-service\xmppservice\build\intermediates\pre-dexed\debug\smack-resolver-minidns-4.2.0_d16c71a802bc76e79aa01d80b82cbc63d2955d41.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\danie\.gradle\caches\modules-2\files-2.1\org.jxmpp\jxmpp-jid\0.5.0\eb66b23d633f6a8c01526a78507dac80afef239c\jxmpp-jid-0.5.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="eb66b23d633f6a8c01526a78507dac80afef239c">
+        <dex dex="C:\Users\danie\AndroidStudioProjects\XMPPservice\xmpp-service\xmppservice\build\intermediates\pre-dexed\debug\jxmpp-jid-0.5.0_2e4617a354badb6afaf93a9d192ecbfcaf77fa03.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\danie\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.5\686c608d1805b6d4d425ec4459e88164ffc85870\gson-2.5.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="686c608d1805b6d4d425ec4459e88164ffc85870">
+        <dex dex="C:\Users\danie\AndroidStudioProjects\XMPPservice\xmpp-service\xmppservice\build\intermediates\pre-dexed\debug\gson-2.5_b574a01c419813c691ae7da4a5b3f3f5b0128428.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\danie\.gradle\caches\modules-2\files-2.1\de.measite.minidns\minidns-hla\0.2.1\a76c22eb490a07e0a4c055df03b8966e4ce587b8\minidns-hla-0.2.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="a76c22eb490a07e0a4c055df03b8966e4ce587b8">
+        <dex dex="C:\Users\danie\AndroidStudioProjects\XMPPservice\xmpp-service\xmppservice\build\intermediates\pre-dexed\debug\minidns-hla-0.2.1_10b6a2708d1cbbe23f123efc1767e9ec538ffdc9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\danie\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.4.0\support-annotations-23.4.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="ffbe55fdb2bb456b1485831706a9eac3300bb6b8">
+        <dex dex="C:\Users\danie\AndroidStudioProjects\XMPPservice\xmpp-service\xmppservice\build\intermediates\pre-dexed\debug\support-annotations-23.4.0_ead2e2aab81b5dee44334edd12c02ae0d83e4b1f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\danie\.gradle\caches\modules-2\files-2.1\org.igniterealtime.smack\smack-sasl-provided\4.2.0\dd5420f029cd3251fd8dfaa3de93ef8a8a607fc8\smack-sasl-provided-4.2.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="dd5420f029cd3251fd8dfaa3de93ef8a8a607fc8">
+        <dex dex="C:\Users\danie\AndroidStudioProjects\XMPPservice\xmpp-service\xmppservice\build\intermediates\pre-dexed\debug\smack-sasl-provided-4.2.0_c81663b8d5b55abca6ffb4a5ae3343bdf85d154e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\danie\.gradle\caches\modules-2\files-2.1\org.igniterealtime.smack\smack-android-extensions\4.2.0\ed0c66a3b414382155b00d08652145ceaed23856\smack-android-extensions-4.2.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="ed0c66a3b414382155b00d08652145ceaed23856">
+        <dex dex="C:\Users\danie\AndroidStudioProjects\XMPPservice\xmpp-service\xmppservice\build\intermediates\pre-dexed\debug\smack-android-extensions-4.2.0_2831571ceeb353fe4d1ffdd780ace93295d0f5e7.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\danie\.android\build-cache\4550fc8d3c7ccb8409202914d59ec2fc5de04098\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="de4db3785756bfb0915a9f59a9b3f2fea7407be4">
+        <dex dex="C:\Users\danie\AndroidStudioProjects\XMPPservice\xmpp-service\xmppservice\build\intermediates\pre-dexed\debug\classes_3e21c20d168a4f2f90342a6f3e5ad13d5fcaf5ff.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\danie\.android\build-cache\2f1e980636b8501886a2a1e29141d2c8a006de96\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="548f06de403a9409f00554b3ee12a9fdea0e236c">
+        <dex dex="C:\Users\danie\AndroidStudioProjects\XMPPservice\xmpp-service\xmppservice\build\intermediates\pre-dexed\debug\classes_d89db24d7bbdd67b6a9157cbd8c237702948aa2b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\danie\AppData\Local\Android\sdk\extras\m2repository\com\android\support\constraint\constraint-layout-solver\1.0.2\constraint-layout-solver-1.0.2.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="b9cd8fc6bd15cb915735d34535db30ece0c44603">
+        <dex dex="C:\Users\danie\AndroidStudioProjects\XMPPservice\xmpp-service\xmppservice\build\intermediates\pre-dexed\debug\constraint-layout-solver-1.0.2_5f9bd54574210bbef027d982a881f901414e90f8.jar" />
+    </item>
+
+</items>

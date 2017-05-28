@@ -10,6 +10,8 @@ import net.gotev.xmppservice.database.TransactionStatements;
 import net.gotev.xmppservice.database.models.Message;
 import net.gotev.xmppservice.database.tables.MessagesTable;
 
+import org.jxmpp.jid.Jid;
+
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class MessagesProvider extends Provider<Message> {
         super(Message.class, MessagesTable.NAME, database);
     }
 
-    public TransactionBuilder addOutgoingMessage(String account, String recipient, String message) {
+    public TransactionBuilder addOutgoingMessage(Jid account, Jid recipient, String message) {
         Message msg = new Message();
 
         msg.setAccount(account);
@@ -36,7 +38,7 @@ public class MessagesProvider extends Provider<Message> {
         return add(msg);
     }
 
-    public TransactionBuilder addIncomingMessage(String account, String recipient, String message) {
+    public TransactionBuilder addIncomingMessage(Jid account, Jid recipient, String message) {
         Message msg = new Message();
 
         msg.setAccount(account);
@@ -89,10 +91,10 @@ public class MessagesProvider extends Provider<Message> {
         return delete(MessagesTable.COL_ID + " = " + id, null);
     }
 
-    public List<Message> getPendingMessages(String account) {
+    public List<Message> getPendingMessages(Jid account) {
         final StringBuilder query = new StringBuilder();
 
-        String escapedAccount = DatabaseUtils.sqlEscapeString(account);
+        String escapedAccount = DatabaseUtils.sqlEscapeString(account.toString());
 
         query.append(MessagesTable.COL_ACCOUNT).append(" = ")
              .append(escapedAccount).append(" AND ")
@@ -142,9 +144,9 @@ public class MessagesProvider extends Provider<Message> {
         return delete(query.toString(), null);
     }
 
-    public long countUnreadMessages(String account, String recipient) {
+    public long countUnreadMessages(Jid account, String recipient) {
 
-        String escapedAccount = DatabaseUtils.sqlEscapeString(account);
+        String escapedAccount = DatabaseUtils.sqlEscapeString(account.toString());
         String escapedRecipient = DatabaseUtils.sqlEscapeString(recipient + "%");
 
         String where = MessagesTable.COL_ACCOUNT + " = " + escapedAccount

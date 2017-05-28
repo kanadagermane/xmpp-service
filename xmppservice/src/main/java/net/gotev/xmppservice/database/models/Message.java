@@ -5,6 +5,9 @@ import android.database.Cursor;
 import net.gotev.xmppservice.database.DatabaseModel;
 import net.gotev.xmppservice.database.tables.MessagesTable;
 
+import org.jxmpp.jid.Jid;
+import org.jxmpp.jid.impl.JidCreate;
+
 import java.util.Date;
 
 import static net.gotev.xmppservice.database.SqLiteDatabase.getIntFromCursor;
@@ -18,8 +21,8 @@ public class Message implements DatabaseModel {
 
     private long id = -1;
     private long creationTimestamp;
-    private String account;
-    private String remoteAccount;
+    private Jid account;
+    private Jid remoteAccount;
     private int direction;
     private String message;
     private int status;
@@ -35,8 +38,15 @@ public class Message implements DatabaseModel {
     public void setValuesFromCursor(Cursor cursor) {
         id = getLongFromCursor(cursor, MessagesTable.COL_ID);
         creationTimestamp = getLongFromCursor(cursor, MessagesTable.COL_CREATION_TIMESTAMP);
-        account = getStringFromCursor(cursor, MessagesTable.COL_ACCOUNT);
-        remoteAccount = getStringFromCursor(cursor, MessagesTable.COL_REMOTE_ACCOUNT);
+        try {
+            account = JidCreate.bareFrom(getStringFromCursor(cursor, MessagesTable.COL_ACCOUNT));
+        } catch (Exception ex) {}
+
+        try {
+            remoteAccount =  JidCreate.bareFrom(getStringFromCursor(cursor, MessagesTable.COL_REMOTE_ACCOUNT));
+        } catch (Exception ex) {}
+
+
         direction = getIntFromCursor(cursor, MessagesTable.COL_DIRECTION);
         message = getStringFromCursor(cursor, MessagesTable.COL_MESSAGE);
         status =  getIntFromCursor(cursor, MessagesTable.COL_STATUS);
@@ -54,8 +64,8 @@ public class Message implements DatabaseModel {
         }
 
         out.put(MessagesTable.COL_CREATION_TIMESTAMP, creationTimestamp);
-        out.put(MessagesTable.COL_ACCOUNT, account);
-        out.put(MessagesTable.COL_REMOTE_ACCOUNT, remoteAccount);
+        out.put(MessagesTable.COL_ACCOUNT, account.toString());
+        out.put(MessagesTable.COL_REMOTE_ACCOUNT, remoteAccount.toString());
         out.put(MessagesTable.COL_DIRECTION, direction);
         out.put(MessagesTable.COL_MESSAGE, message);
         out.put(MessagesTable.COL_STATUS, status);
@@ -79,19 +89,19 @@ public class Message implements DatabaseModel {
         return creationTimestamp;
     }
 
-    public String getAccount() {
+    public Jid getAccount() {
         return account;
     }
 
-    public void setAccount(String account) {
+    public void setAccount(Jid account) {
         this.account = account;
     }
 
-    public String getRemoteAccount() {
+    public Jid getRemoteAccount() {
         return remoteAccount;
     }
 
-    public void setRemoteAccount(String remoteAccount) {
+    public void setRemoteAccount(Jid remoteAccount) {
         this.remoteAccount = remoteAccount;
     }
 

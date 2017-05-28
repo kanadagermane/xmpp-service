@@ -7,6 +7,8 @@ import net.gotev.xmppservice.database.SqLiteDatabase;
 import net.gotev.xmppservice.database.providers.MessagesProvider;
 
 import org.jivesoftware.smack.SmackConfiguration;
+import org.jxmpp.jid.Jid;
+import org.jxmpp.jid.impl.JidCreate;
 
 import java.util.ArrayList;
 
@@ -33,6 +35,7 @@ import static net.gotev.xmppservice.XmppServiceCommand.PARAM_MESSAGE_ID;
 import static net.gotev.xmppservice.XmppServiceCommand.PARAM_PERSONAL_MESSAGE;
 import static net.gotev.xmppservice.XmppServiceCommand.PARAM_PRESENCE_MODE;
 import static net.gotev.xmppservice.XmppServiceCommand.PARAM_REMOTE_ACCOUNT;
+import static org.jxmpp.jid.impl.JidCreate.bareFrom;
 
 /**
  * Main XMPP Service.
@@ -257,7 +260,12 @@ public class XmppService extends BackgroundService {
     }
 
     private void handleSendMessage(Intent intent) {
-        String remoteAccount = intent.getStringExtra(PARAM_REMOTE_ACCOUNT);
+
+        Jid remoteAccount = null;
+        try {
+            remoteAccount = JidCreate.bareFrom(intent.getStringExtra(PARAM_REMOTE_ACCOUNT));
+        } catch (Exception ex) {}
+
         String message = intent.getStringExtra(PARAM_MESSAGE);
 
         try {
@@ -324,7 +332,10 @@ public class XmppService extends BackgroundService {
     }
 
     private void handleRefreshContact(Intent intent) {
-        String remoteAccount = intent.getStringExtra(PARAM_REMOTE_ACCOUNT);
+        Jid remoteAccount = null;
+        try {
+            remoteAccount = bareFrom(intent.getStringExtra(PARAM_REMOTE_ACCOUNT));
+        } catch (Exception ex)  {}
 
         if (mConnection != null)
             mConnection.singleEntryUpdated(remoteAccount);

@@ -2,12 +2,15 @@ package net.gotev.xmppservice;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.util.Log;
 
 import net.gotev.xmppservice.database.SqLiteDatabase;
 import net.gotev.xmppservice.database.TransactionBuilder;
 import net.gotev.xmppservice.database.providers.MessagesProvider;
 import net.gotev.xmppservice.database.tables.MessagesTable;
 
+import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPConnection;
@@ -28,6 +31,8 @@ import org.jivesoftware.smackx.ping.PingManager;
 import org.jivesoftware.smackx.receipts.DeliveryReceiptManager;
 import org.jivesoftware.smackx.vcardtemp.VCardManager;
 import org.jivesoftware.smackx.vcardtemp.packet.VCard;
+import org.jxmpp.jid.Jid;
+import org.jxmpp.jid.impl.JidCreate;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,6 +40,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Implementation of the XMPP Connection.
@@ -58,38 +64,64 @@ public class XmppServiceConnection
         mMessagesProvider = new MessagesProvider(mDatabase);
     }
 
-    public void connect() throws IOException, XMPPException, SmackException {
+    public void connect() throws IOException, XMPPException, SmackException, Exception {
         if (mConnection == null) {
             createConnection();
         }
+        final RosterListener rosterListener = this;
+        final PingFailedListener pingFailedListener = this;
+        final ChatManagerListener chatManagerListener = this;
 
-        if (!mConnection.isConnected()) {
-            Logger.info(TAG, "Connecting to " + mAccount.getHost() + ":" + mAccount.getPort());
-            mConnection.connect();
+        AsyncTask<Void, Void, Boolean> connectionThread = new AsyncTask<Void, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(Void... arg0) {
+                // Create a connection
+                try {
 
-            Roster roster = Roster.getInstanceFor(mConnection);
-            roster.removeRosterListener(this);
-            roster.addRosterListener(this);
-            roster.setSubscriptionMode(Roster.SubscriptionMode.accept_all);
-            roster.setRosterLoadedAtLogin(true);
-        }
+                    if (!mConnection.isConnected()) {
+                        Logger.info(TAG, "Connecting to " + mAccount.getHostAdress() + ":" + mAccount.getPort());
 
-        if (!mConnection.isAuthenticated()) {
-            Logger.info(TAG, "Authenticating " + mAccount.getXmppJid());
-            mConnection.login();
+                        mConnection.connect();
 
-            PingManager.setDefaultPingInterval(XmppService.DEFAULT_PING_INTERVAL);
-            PingManager pingManager = PingManager.getInstanceFor(mConnection);
-            pingManager.registerPingFailedListener(this);
+                        Roster roster = Roster.getInstanceFor(mConnection);
+                        roster.removeRosterListener(rosterListener);
+                        roster.addRosterListener(rosterListener);
+                        roster.setSubscriptionMode(Roster.SubscriptionMode.accept_all);
+                        roster.setRosterLoadedAtLogin(true);
+                    }
 
-            ChatManager chatManager = ChatManager.getInstanceFor(mConnection);
-            chatManager.removeChatListener(this);
-            chatManager.addChatListener(this);
+                    if (!mConnection.isAuthenticated()) {
+                        Logger.info(TAG, "Authenticating " + mAccount.getXmppJid());
+                        mConnection.login();
 
-            DeliveryReceiptManager receipts = DeliveryReceiptManager.getInstanceFor(mConnection);
-            receipts.setAutoReceiptMode(DeliveryReceiptManager.AutoReceiptMode.always);
-            receipts.autoAddDeliveryReceiptRequests();
-        }
+                        PingManager.setDefaultPingInterval(XmppService.DEFAULT_PING_INTERVAL);
+                        PingManager pingManager = PingManager.getInstanceFor(mConnection);
+                        pingManager.registerPingFailedListener(pingFailedListener);
+
+                        ChatManager chatManager = ChatManager.getInstanceFor(mConnection);
+                        chatManager.removeChatListener(chatManagerListener);
+                        chatManager.addChatListener(chatManagerListener);
+
+                        DeliveryReceiptManager receipts = DeliveryReceiptManager.getInstanceFor(mConnection);
+                        receipts.setAutoReceiptMode(DeliveryReceiptManager.AutoReceiptMode.always);
+                        receipts.autoAddDeliveryReceiptRequests();
+                    }
+
+                    return true;
+                } catch (Exception e) {
+                    Log.d("XMPP",e.getMessage() + " Catch connection.connect");
+                    return false;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(final Boolean result) {
+               Log.d("connection", "connected!!");
+            }
+        };
+
+        connectionThread.execute();
+
 
         mOwnAvatar = getAvatarFor("");
     }
@@ -98,16 +130,19 @@ public class XmppServiceConnection
         mConnection.disconnect();
     }
 
-    private void createConnection() {
+    private void createConnection() throws Exception{
         Logger.debug(TAG, "creating new connection to " + mAccount.getHost() + ":" + mAccount.getPort());
 
+
         XMPPTCPConnectionConfiguration.Builder builder = XMPPTCPConnectionConfiguration.builder()
-                .setServiceName(mAccount.getServiceName())
+                .setXmppDomain(mAccount.getServiceName())
                 .setResource(mAccount.getResourceName())
-                .setHost(mAccount.getHost())
+                .setHostAddress(mAccount.getHostAdress())
+                .setSecurityMode(ConnectionConfiguration.SecurityMode.disabled)
                 .setPort(mAccount.getPort())
-                .setUsernameAndPassword(mAccount.getXmppJid(), mAccount.getPassword())
+                .setUsernameAndPassword(mAccount.getXmppJid().getLocalpartOrThrow(), mAccount.getPassword())
                 .setConnectTimeout(XmppService.CONNECT_TIMEOUT);
+
 
         if (XmppService.CUSTOM_SSL_CONTEXT != null) {
             Logger.debug(TAG, "setting custom SSL context");
@@ -127,21 +162,25 @@ public class XmppServiceConnection
         mConnection.addConnectionListener(this);
     }
 
-    public void singleEntryUpdated(String entry) {
-        if (entry == null || entry.isEmpty())
+    public void singleEntryUpdated(Jid entry) {
+        if (entry == null)
             return;
 
-        List<String> entries = new ArrayList<>(1);
+        List<Jid> entries = new ArrayList<>(1);
         entries.add(entry);
         entriesUpdated(entries);
     }
 
-    public void addMessageAndProcessPending(String destinationJID, String message) throws SmackException.NotConnectedException {
+    public void addMessageAndProcessPending(Jid destinationJID, String message) throws SmackException.NotConnectedException {
         saveMessage(destinationJID, message, false);
-        sendPendingMessages();
+        try {
+            sendPendingMessages();
+        }  catch (Exception ey) {
+            Log.d("jo", "wtfff");
+        }
     }
 
-    private void saveMessage(String remoteAccount, String message, boolean incoming) {
+    private void saveMessage(Jid remoteAccount, String message, boolean incoming) {
         try {
             MessagesProvider messagesProvider = new MessagesProvider(mDatabase);
             TransactionBuilder insertTransaction;
@@ -164,13 +203,13 @@ public class XmppServiceConnection
         }
     }
 
-    private void sendMessage(String destinationJID, String message) throws SmackException.NotConnectedException {
+    private void sendMessage(Jid destinationJID, String message) throws SmackException.NotConnectedException, Exception {
         Logger.debug(TAG, "Sending message to " + destinationJID);
-        Chat chat = ChatManager.getInstanceFor(mConnection).createChat(destinationJID, this);
+        Chat chat = ChatManager.getInstanceFor(mConnection).createChat(JidCreate.entityBareFrom(destinationJID), this);
         chat.sendMessage(message);
     }
 
-    public void sendPendingMessages() throws SmackException.NotConnectedException {
+    public void sendPendingMessages() throws SmackException.NotConnectedException, Exception{
         Logger.debug(TAG, "Sending pending messages for " + mAccount.getXmppJid());
 
         MessagesProvider messagesProvider = new MessagesProvider(mDatabase);
@@ -191,10 +230,15 @@ public class XmppServiceConnection
     public void setPresence(int presenceMode, String personalMessage) throws SmackException.NotConnectedException {
         mAccount.setPresenceMode(presenceMode);
         mAccount.setPersonalMessage(personalMessage);
-        setPresence();
+        try {
+            setPresence();
+        } catch (Exception ey) {
+            Log.d("joo", "presence");
+        }
+
     }
 
-    public void setPresence() throws SmackException.NotConnectedException {
+    public void setPresence() throws SmackException.NotConnectedException, Exception {
         Presence.Mode presMode;
 
         switch(mAccount.getPresenceMode()) {
@@ -226,7 +270,7 @@ public class XmppServiceConnection
 
     public void setOwnAvatar(String filePath)
             throws SmackException.NotConnectedException, XMPPException.XMPPErrorException,
-                   SmackException.NoResponseException {
+                   SmackException.NoResponseException, Exception {
 
         VCardManager manager = VCardManager.getInstanceFor(mConnection);
 
@@ -256,7 +300,7 @@ public class XmppServiceConnection
             if (remoteAccount == null || remoteAccount.isEmpty()) {
                 card = manager.loadVCard();
             } else {
-                card = manager.loadVCard(remoteAccount);
+                card = manager.loadVCard(JidCreate.entityBareFrom(remoteAccount));
             }
 
             if (card == null) return null;
@@ -277,7 +321,7 @@ public class XmppServiceConnection
 
     public void addContact(String remoteAccount, String alias) {
         try {
-            Roster.getInstanceFor(mConnection).createEntry(remoteAccount, alias, null);
+            Roster.getInstanceFor(mConnection).createEntry(JidCreate.entityBareFrom(remoteAccount), alias, null);
             XmppServiceBroadcastEventEmitter.broadcastContactAdded(remoteAccount);
 
         } catch (Exception exc) {
@@ -289,7 +333,7 @@ public class XmppServiceConnection
     public void removeContact(String remoteAccount) {
         try {
             Roster roster = Roster.getInstanceFor(mConnection);
-            RosterEntry entry = roster.getEntry(remoteAccount);
+            RosterEntry entry = roster.getEntry(JidCreate.entityBareFrom(remoteAccount));
             roster.removeEntry(entry);
 
             clearConversationsWith(remoteAccount);
@@ -304,7 +348,7 @@ public class XmppServiceConnection
     public void renameContact(String remoteAccount, String newAlias) {
         try {
             Roster roster = Roster.getInstanceFor(mConnection);
-            RosterEntry entry = roster.getEntry(remoteAccount);
+            RosterEntry entry = roster.getEntry(JidCreate.entityBareFrom(remoteAccount));
             entry.setName(newAlias);
 
             XmppServiceBroadcastEventEmitter.broadcastContactRenamed(remoteAccount, newAlias);
@@ -320,7 +364,7 @@ public class XmppServiceConnection
                     + " for " + mAccount.getXmppJid());
 
             new MessagesProvider(mDatabase)
-                    .deleteConversation(mAccount.getXmppJid(), remoteAccount)
+                    .deleteConversation(mAccount.getXmppJid().toString(), remoteAccount)
                     .execute();
 
             XmppServiceBroadcastEventEmitter.broadcastConversationsCleared(remoteAccount);
@@ -416,12 +460,12 @@ public class XmppServiceConnection
 
     // start roster listener implementation
     @Override
-    public void entriesAdded(Collection<String> addresses) {
+    public void entriesAdded(Collection<Jid> addresses) {
         entriesUpdated(addresses);
     }
 
     @Override
-    public void entriesUpdated(Collection<String> addresses) {
+    public void entriesUpdated(Collection<Jid> addresses) {
         if (addresses == null || addresses.isEmpty()) {
             return;
         }
@@ -438,9 +482,9 @@ public class XmppServiceConnection
             return;
         }
 
-        for (String destination : addresses) {
+        for (Jid destination : addresses) {
             destination = getXmppJid(destination);
-            RosterEntry entry = roster.getEntry(destination);
+            RosterEntry entry = roster.getEntry(destination.asBareJid());
             XmppRosterEntry xmppRosterEntry = getRosterEntryFor(roster, entry);
             int index = entries.indexOf(xmppRosterEntry);
             if (index < 0) {
@@ -456,12 +500,12 @@ public class XmppServiceConnection
     }
 
     @Override
-    public void entriesDeleted(Collection<String> addresses) {
+    public void entriesDeleted(Collection<Jid> addresses) {
         if (addresses == null || addresses.isEmpty()) {
             return;
         }
 
-        for (String destination : addresses) {
+        for (Jid destination : addresses) {
             destination = getXmppJid(destination);
             sendUnsubscriptionRequestTo(destination);
 
@@ -500,7 +544,7 @@ public class XmppServiceConnection
             return;
         }
 
-        String from = getXmppJid(presence.getFrom());
+        Jid from = getXmppJid(presence.getFrom());
         int index = entries.indexOf(new XmppRosterEntry().setXmppJID(from));
 
         if (index < 0) {
@@ -508,7 +552,7 @@ public class XmppServiceConnection
             return;
         }
 
-        Presence rosterPresence = roster.getPresence(from);
+        Presence rosterPresence = roster.getPresence(from.asBareJid());
         entries.get(index)
                .setAvailable(rosterPresence.isAvailable())
                .setPresenceMode(rosterPresence.getMode().ordinal())
@@ -524,6 +568,10 @@ public class XmppServiceConnection
             return destination.split("/")[0];
         }
 
+        return destination;
+    }
+
+    private Jid getXmppJid(Jid destination) {
         return destination;
     }
 
@@ -557,15 +605,15 @@ public class XmppServiceConnection
 
     private XmppRosterEntry getRosterEntryFor(Roster roster, RosterEntry entry) {
         XmppRosterEntry newEntry = new XmppRosterEntry();
-        newEntry.setXmppJID(entry.getUser())
+        newEntry.setXmppJID(entry.getJid())
                 .setAlias(entry.getName())
-                .setAvatar(getCachedAvatar(entry.getUser()));
+                .setAvatar(getCachedAvatar(entry.getJid()));
 
         if (newEntry.getAvatar() == null) {
             newEntry.setAvatar(getAvatarFor(entry.getUser()));
         }
 
-        Presence presence = roster.getPresence(entry.getUser());
+        Presence presence = roster.getPresence(entry.getJid());
         newEntry.setAvailable(presence.isAvailable())
                 .setPresenceMode(presence.getMode().ordinal())
                 .setPersonalMessage(presence.getStatus());
@@ -586,7 +634,7 @@ public class XmppServiceConnection
         }
     }
 
-    private void sendUnsubscriptionRequestTo(String destination) {
+    private void sendUnsubscriptionRequestTo(Jid destination) {
         Logger.debug(TAG, "Sending un-subscription request to " + destination);
         try {
             Presence subscribe = new Presence(Presence.Type.unsubscribe);
@@ -597,7 +645,7 @@ public class XmppServiceConnection
         }
     }
 
-    private byte[] getCachedAvatar(String xmppJID) {
+    private byte[] getCachedAvatar(Jid xmppJID) {
         ArrayList<XmppRosterEntry> rosterEntries = XmppService.getRosterEntries();
 
         if (rosterEntries == null || rosterEntries.isEmpty())

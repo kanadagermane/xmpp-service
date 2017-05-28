@@ -2,6 +2,12 @@ package net.gotev.xmppservice;
 
 import com.google.gson.Gson;
 
+import org.jxmpp.jid.Jid;
+import org.jxmpp.jid.impl.JidCreate;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 /**
  * Xmpp Account configuration.
  * @author gotev (Aleksandar Gotev)
@@ -19,18 +25,38 @@ public class XmppAccount {
     private String serviceName;
     private String password;
     private String host;
+
+    public InetAddress getHostAdress() {
+        InetAddress inetAddress = null;
+        try {
+            inetAddress = InetAddress.getByName(hostAdress);
+        } catch (UnknownHostException ex) {
+
+        }
+
+        return inetAddress;
+    }
+
+    public void setHostAdress(String hostAdress) {
+        this.hostAdress = hostAdress;
+    }
+
+    private String hostAdress;
     private int port;
     private int priority;
     private String resourceName;
     private String personalMessage;
     private int presenceMode;
 
-    public String getXmppJid() {
-        return xmppJid;
+    public Jid getXmppJid() {
+        try {
+            return JidCreate.bareFrom(xmppJid);
+        } catch (Exception ex) {}
+        return null;
     }
 
-    public void setXmppJid(String xmppJid) {
-        this.xmppJid = xmppJid;
+    public void setXmppJid(Jid xmppJid) {
+        this.xmppJid = xmppJid.toString();
     }
 
     public String getServiceName() {

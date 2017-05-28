@@ -3,6 +3,8 @@ package net.gotev.xmppservice;
 import android.content.Context;
 import android.content.Intent;
 
+import org.jxmpp.jid.Jid;
+
 /**
  * Emits the xmpp service broadcast intents.
  * @author gotev (Aleksandar Gotev)
@@ -59,14 +61,14 @@ public class XmppServiceBroadcastEventEmitter {
     public static synchronized void broadcastXmppDisconnected() {
         Intent broadcast = new Intent();
         broadcast.setAction(mNamespace + BROADCAST_DISCONNECTED);
-        mContext.sendBroadcast(broadcast);
+        //mContext.sendBroadcast(broadcast);
     }
 
-    public static synchronized void broadcastMessageAdded(String remoteAccount, boolean incoming) {
+    public static synchronized void broadcastMessageAdded(Jid remoteAccount, boolean incoming) {
         Intent broadcast = new Intent();
 
         broadcast.setAction(mNamespace + BROADCAST_MESSAGE_ADDED);
-        broadcast.putExtra(PARAM_REMOTE_ACCOUNT, remoteAccount);
+        broadcast.putExtra(PARAM_REMOTE_ACCOUNT, remoteAccount.toString());
         broadcast.putExtra(PARAM_INCOMING, incoming);
 
         mContext.sendBroadcast(broadcast);

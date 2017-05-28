@@ -5,13 +5,15 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
+import org.jxmpp.jid.Jid;
+
 /**
  * Represents an entry in the roster.
  * @author gotev (Aleksandar Gotev)
  */
 public class XmppRosterEntry implements Comparable<XmppRosterEntry> {
 
-    private String xmppJID;
+    private Jid xmppJID;
     private byte[] avatar;
     private String alias;
     private boolean available;
@@ -19,11 +21,11 @@ public class XmppRosterEntry implements Comparable<XmppRosterEntry> {
     private String personalMessage;
     private long unreadMessages;
 
-    public String getXmppJID() {
+    public Jid getXmppJID() {
         return xmppJID;
     }
 
-    public XmppRosterEntry setXmppJID(String xmppJID) {
+    public XmppRosterEntry setXmppJID(Jid xmppJID) {
         this.xmppJID = xmppJID;
         return this;
     }
@@ -117,12 +119,12 @@ public class XmppRosterEntry implements Comparable<XmppRosterEntry> {
         if (cmp == 0) {
             String nameA = alias;
             if (nameA == null || nameA.isEmpty()) {
-                nameA = xmppJID;
+                nameA = xmppJID.toString();
             }
 
             String nameB = another.alias;
             if (nameB == null || nameB.isEmpty()) {
-                nameB = another.xmppJID;
+                nameB = another.xmppJID.toString();
             }
 
             cmp = nameA.compareTo(nameB);
